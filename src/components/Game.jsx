@@ -2,12 +2,9 @@ import { useState } from 'react'
 import Board from './Board'
 
 function Game() {
-  // TODO (paso 2): nuevo estado "selected" (empieza en null).
-  //   No forma parte del historial: elegir una ficha no es una jugada.
-
-  // TODO (paso 2): handlePlay y jumpTo deben dejar "selected" a null
   const [history, setHistory] = useState([Array(9).fill(null)])
   const [currentMove, setCurrentMove] = useState(0)
+  const [selected, setSelected] = useState(null)
 
   const xIsNext = currentMove % 2 === 0
   const currentSquares = history[currentMove]
@@ -16,10 +13,12 @@ function Game() {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares]
     setHistory(nextHistory)
     setCurrentMove(nextHistory.length - 1)
+    setSelected(null)
   }
 
   function jumpTo(nextMove){
     setCurrentMove(nextMove)
+    setSelected(null)
   }
 
   const moves = history.map((_, move) => {
@@ -40,8 +39,7 @@ function Game() {
   return (
     <div className="game">
       <div className="game-board">
-        {/* TODO (paso 2): pasa también selected y onSelect */}
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} selected={selected} onSelect={setSelected} />
       </div>
       <div className="game-info">
         <ol>{moves}</ol>

@@ -1,11 +1,12 @@
-const MAX_FICHAS = 3;
 // Props nuevas que recibirá Board (paso 2):
 //   selected -> posición de la ficha elegida para mover, o null
 //   onSelect -> función para cambiar la ficha elegida
 import Square from './Square'
 import { calculateWinner } from '../utils/calculateWinner';
 
-function Board({xIsNext, squares, onPlay}) {
+const MAX_FICHAS = 3;
+
+function Board({xIsNext, squares, onPlay, selected, onSelect}) {
   // TODO (paso 2): handleClick(i) con dos fases
   //   Fase colocar -> igual que en la parte 1
   //   Fase mover   -> 1) pulsar una ficha propia la selecciona (o la deselecciona)
@@ -21,21 +22,39 @@ function Board({xIsNext, squares, onPlay}) {
   const jugador = xIsNext ? 'X' : 'O'
   const fichasJugador = squares.filter((casilla) => casilla === jugador).length
   const faseMover = fichasJugador >= MAX_FICHAS
-  
-  function handleClick(i){
-    if(squares[i] || winner){
-      return;
-    }
-    const copia = squares.slice()
-    copia[i] = jugador
-    onPlay(copia)
-  }
 
   let status;
   if(winner){
     status = "Ganador: " + winner
   }else{
-    status = 'Siguiente jugador: ' + jugador + ' (faseMover: ' + faseMover + ')'
+    status = 'Siguiente jugador: ' + jugador
+  }
+
+  function handleClick(i){
+    if(winner){
+      return;
+    }
+    if(!faseMover){
+      if(squares[i]){
+        return
+      }
+      const copia = squares.slice()
+      copia[i] = jugador
+      onPlay(copia)
+      return
+    }
+    
+    if (squares[i] === jugador) {
+      onSelect(selected === i ? null : i)
+      return
+    }
+
+    if (selected !== null && squares[i] === null) {
+      const copia = squares.slice()
+      copia[selected] = null
+      copia[i] = jugador
+      onPlay(copia)
+    }
   }
 
   return (
