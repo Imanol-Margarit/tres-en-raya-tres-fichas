@@ -4,10 +4,6 @@ import { calculateWinner } from '../utils/calculateWinner';
 const MAX_FICHAS = 3;
 
 function Board({xIsNext, squares, onPlay, selected, onSelect}) {
-  // TODO (paso 4): texto de estado según la fase
-  //   "Turno de X: coloca una ficha"
-  //   "Turno de X: elige una de tus fichas para moverla"
-  //   "Turno de X: elige una casilla vacía"
   const winner = calculateWinner(squares);
 
   const jugador = xIsNext ? 'X' : 'O'
