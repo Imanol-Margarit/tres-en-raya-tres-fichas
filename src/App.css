@@ -71,3 +71,20 @@ h1 {
   outline: 3px solid #e0a800;
   outline-offset: -3px;
 }
+
+.game-board {
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.game-board .status {
+  text-align: center;
+  min-height: 3em;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+.game-info {
+  flex: 0 0 200px;
+  width: 200px;
+}

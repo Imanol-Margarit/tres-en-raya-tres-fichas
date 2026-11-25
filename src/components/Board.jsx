@@ -14,11 +14,15 @@ function Board({xIsNext, squares, onPlay, selected, onSelect}) {
   const fichasJugador = squares.filter((casilla) => casilla === jugador).length
   const faseMover = fichasJugador >= MAX_FICHAS
 
-  let status;
-  if(winner){
-    status = "Ganador: " + winner
-  }else{
-    status = 'Siguiente jugador: ' + jugador
+  let status
+  if (winner) {
+    status = 'Ganador: ' + winner
+  } else if (!faseMover) {
+    status = 'Turno de ' + jugador + ': coloca una ficha'
+  } else if (selected === null) {
+    status = 'Turno de ' + jugador + ': elige una de tus fichas para moverla'
+  } else {
+    status = 'Turno de ' + jugador + ': elige una casilla vacía'
   }
 
   function handleClick(i){
