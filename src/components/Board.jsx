@@ -1,7 +1,4 @@
-// TODO (preparación): copia aquí tu Board de la parte 1 y después modifícalo.
-
-// TODO (paso 1): constante MAX_FICHAS = 3
-
+const MAX_FICHAS = 3;
 // Props nuevas que recibirá Board (paso 2):
 //   selected -> posición de la ficha elegida para mover, o null
 //   onSelect -> función para cambiar la ficha elegida
@@ -9,11 +6,6 @@ import Square from './Square'
 import { calculateWinner } from '../utils/calculateWinner';
 
 function Board({xIsNext, squares, onPlay}) {
-  // TODO (paso 1): valores derivados
-  //   - jugador: 'X' u 'O' según el turno
-  //   - fichasJugador: cuántas fichas tiene ese jugador en el tablero
-  //   - faseMover: true si ya tiene MAX_FICHAS
-
   // TODO (paso 2): handleClick(i) con dos fases
   //   Fase colocar -> igual que en la parte 1
   //   Fase mover   -> 1) pulsar una ficha propia la selecciona (o la deselecciona)
@@ -25,13 +17,17 @@ function Board({xIsNext, squares, onPlay}) {
   //   "Turno de X: elige una de tus fichas para moverla"
   //   "Turno de X: elige una casilla vacía"
   const winner = calculateWinner(squares);
+
+  const jugador = xIsNext ? 'X' : 'O'
+  const fichasJugador = squares.filter((casilla) => casilla === jugador).length
+  const faseMover = fichasJugador >= MAX_FICHAS
   
   function handleClick(i){
     if(squares[i] || winner){
       return;
     }
     const copia = squares.slice()
-    copia[i] = xIsNext ? 'X' : 'O';
+    copia[i] = jugador
     onPlay(copia)
   }
 
@@ -39,7 +35,7 @@ function Board({xIsNext, squares, onPlay}) {
   if(winner){
     status = "Ganador: " + winner
   }else{
-    status = "Siguiente jugador: " + (xIsNext ? 'X' : 'O');
+    status = 'Siguiente jugador: ' + jugador + ' (faseMover: ' + faseMover + ')'
   }
 
   return (
